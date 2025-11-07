@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrayerTimes, Coordinates, CalculationMethod, Madhab } from 'adhan';
+import { PrayerTimes, Coordinates, CalculationMethod } from 'adhan';
 import { find } from 'geo-tz';
 import * as moment from 'moment-timezone';
 import 'moment/locale/ar-ma';
