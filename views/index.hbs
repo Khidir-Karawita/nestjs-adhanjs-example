@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang='ar' dir='rtl'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>أوقات الصلاة</title>
+    <link
+      href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap'
+      rel='stylesheet'
+    />
+    <link rel='stylesheet' href='/styles.css' />
+  </head>
+  <body>
+    <div class='mobile-simulator'>
+      <div class='screen'>
+        <div class='background-container'></div>
+        <div class='background-overlay'></div>
+
+        <div class='content'>
+          {{#if success}}
+            <div class='header-section'>
+              <div class='location'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke-width='1.5'
+                  stroke='currentColor'
+                  width='24'
+                  height='24'
+                >
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    d='M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
+                  />
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z'
+                  />
+                </svg>
+                {{location.name}}
+              </div>
+              <div class='date-info'>
+                <div>{{date}}</div>
+                <div>المنطقة الزمنية: {{location.timezone}}</div>
+              </div>
+            </div>
+
+            <div class='current-prayer-section'>
+              <div
+                class='current-prayer-name'
+                id='currentPrayerName'
+              >العصر</div>
+              <div class='countdown' id='countdown'>00:00:00</div>
+            </div>
+
+            <div class='prayer-times-section'>
+              <div class='prayer-times-list'>
+                <div class='prayer-item' id='prayer-fajr' data-timestamp='{{prayers.fajr.timestamp}}'>
+                  <div class='prayer-info'>
+                    <div class='prayer-name'>الفجر</div>
+                  </div>
+                  <div class='prayer-time'>{{prayers.fajr.time}}</div>
+                </div>
+                <div class='prayer-item' id='prayer-sunrise' data-timestamp='{{prayers.sunrise.timestamp}}'>
+                  <div class='prayer-info'>
+                    <div class='prayer-name'>الشروق</div>
+                  </div>
+                  <div class='prayer-time'>{{prayers.sunrise.time}}</div>
+                </div>
+                <div class='prayer-item' id='prayer-dhuhr' data-timestamp='{{prayers.dhuhr.timestamp}}'>
+                  <div class='prayer-info'>
+                    <div class='prayer-name'>الظهر</div>
+                  </div>
+                  <div class='prayer-time'>{{prayers.dhuhr.time}}</div>
+                </div>
+                <div class='prayer-item' id='prayer-asr' data-timestamp='{{prayers.asr.timestamp}}'>
+                  <div class='prayer-info'>
+                    <div class='prayer-name'>العصر</div>
+                  </div>
+                  <div class='prayer-time'>{{prayers.asr.time}}</div>
+                </div>
+                <div class='prayer-item' id='prayer-maghrib' data-timestamp='{{prayers.maghrib.timestamp}}'>
+                  <div class='prayer-info'>
+                    <div class='prayer-name'>المغرب</div>
+                  </div>
+                  <div class='prayer-time'>{{prayers.maghrib.time}}</div>
+                </div>
+                <div class='prayer-item' id='prayer-isha' data-timestamp='{{prayers.isha.timestamp}}'>
+                  <div class='prayer-info'>
+                    <div class='prayer-name'>العشاء</div>
+                  </div>
+                  <div class='prayer-time'>{{prayers.isha.time}}</div>
+                </div>
+              </div>
+            </div>
+          {{else}}
+            {{#if error}}
+              <div class='error'>
+                <strong>خطأ:</strong>
+                {{error}}
+              </div>
+            {{/if}}
+          {{/if}}
+
+          <div class='input-section'>
+          <h3> <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke-width='1.5'
+                  stroke='currentColor'
+                  width='24'
+                  height='24'
+                >
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    d='M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
+                  />
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z'
+                  />
+                </svg> أدخل إحداثياتك</h3>
+          <form method='GET' action='/'>
+            <div class='input-group'>
+              <div class='input-field'>
+                <label for='lat'>خط العرض (Latitude)</label>
+                <input
+                  type='number'
+                  id='lat'
+                  name='lat'
+                  step='0.0001'
+                  placeholder='مثال: 40.7128'
+                  value='{{inputLat}}'
+                  required
+                />
+              </div>
+              <div class='input-field'>
+                <label for='lng'>خط الطول (Longitude)</label>
+                <input
+                  type='number'
+                  id='lng'
+                  name='lng'
+                  step='0.0001'
+                  placeholder='مثال: -74.0060'
+                  value='{{inputLng}}'
+                  required
+                />
+              </div>
+            </div>
+            <div class='button-group'>
+              <button type='submit' class='btn-primary'>احسب</button>
+              <button
+                type='button'
+                class='btn-secondary'
+                onclick='useGeolocation()'
+              >
+                   استخدم موقعي
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+</html>
