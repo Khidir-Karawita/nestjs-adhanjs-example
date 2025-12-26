@@ -40,7 +40,6 @@ export class AppService {
       const city = results[0].city ?? '';
       const streetName = results[0].streetName ?? '';
       const locationName = `${streetName}, ${city}`;
-      console.log(results);
       return {
         success: true,
         date: moment(date).format('dddd, MMMM D, YYYY'),
