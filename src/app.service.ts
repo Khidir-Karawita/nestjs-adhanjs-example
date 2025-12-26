@@ -37,9 +37,10 @@ export class AppService {
 
       const geocoder = NodeGeocoder(options);
       const results = await geocoder.reverse({ lat: latitude, lon: longitude });
-      const locationName =
-        results[0]?.city || results[0]?.country || 'Unknown Location';
-
+      const city = results[0].city ?? '';
+      const streetName = results[0].streetName ?? '';
+      const locationName = `${streetName}, ${city}`;
+      console.log(results);
       return {
         success: true,
         date: moment(date).format('dddd, MMMM D, YYYY'),
